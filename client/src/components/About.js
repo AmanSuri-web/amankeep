@@ -4,7 +4,6 @@ import '../index.css'
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Tooltip from '@material-ui/core/Tooltip';
 import {Deletename,Deleteaddress,EditData} from './EditUser';
 import Modal from 'react-bootstrap/Modal'
 
