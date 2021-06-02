@@ -163,7 +163,7 @@ router.post('/register',async(req,res)=>{
                subject: 'Account Verification Link',
                
                html: `
-                        'Hello ${fname} <br>Please verify your account by clicking the link: <br>http:/\/\amanregister.herokuapp.com/#/authentication/activate/${token}<br> Thank You!',
+                        'Hello ${fname} <br>Please verify your account by clicking the link: <br>https:/\/\amanregister.herokuapp.com/#/authentication/activate/${token}<br> Thank You!',
                         `
             }
         sgMail
@@ -317,6 +317,7 @@ router.post('/googlelogin',async(req,res)=>{
                     httpOnly:true
                 });
                 console.log(token);
+                res.json("Google Login Successful")
                 res.redirect("/");
             }
             else{

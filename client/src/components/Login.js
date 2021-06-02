@@ -58,11 +58,10 @@ const Login=()=>{
 
             })
         });
-        
-       
-                dispatch({type:"USER",payload:true})
-                window.alert("Google Login Successful ");
-                console.log("Google Login Successful");
+        const data = await res.json();
+        console.log(data);
+        window.alert(data);
+                
     
                 history.push("/about");
         
