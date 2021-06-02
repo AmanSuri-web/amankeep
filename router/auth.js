@@ -317,7 +317,7 @@ router.post('/googlelogin',async(req,res)=>{
                     httpOnly:true
                 });
                 console.log(token);
-                res.json("Google Login Successful")
+                return res.json("Google Login Successful")
                 res.redirect("https://amanregister.herokuapp.com/#/");
             }
             else{
@@ -336,6 +336,7 @@ router.post('/googlelogin',async(req,res)=>{
                     httpOnly:true
                 });
                 console.log(token);
+                return res.json("Google Login Successful")
                 res.redirect("https://amanregister.herokuapp.com/#/");
             }
             
