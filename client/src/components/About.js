@@ -8,12 +8,13 @@ import {Deletename,Deleteaddress,EditData,AddImage} from './EditUser';
 import Modal from 'react-bootstrap/Modal'
 import axios from 'axios'
 
-const Logout =()=>{
+const Logout =async()=>{
 
   const {state,dispatch} = useContext(UserContext);
   const history = useHistory();
   
-    fetch('/logout',{
+  try {
+    const res = await fetch('/logout',{
           method:"GET",
           headers: {
               Accept: "application/json",
@@ -30,7 +31,10 @@ const Logout =()=>{
       }).catch((err)=>{
           console.log(err);
       })
-  
+    } catch (err) {
+      console.log(err);
+      history.push("/");
+    }
 }
 
 const About = () => {
