@@ -59,8 +59,8 @@ const Login=()=>{
             })
         });
         const data = await res.json();
-        console.log(data);
-        window.alert(data);
+        console.log(data.message);
+        window.alert(data.message);
                 
     
                 history.push("/about");
