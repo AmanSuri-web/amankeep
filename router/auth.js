@@ -296,7 +296,7 @@ router.post('/edit',async(req,res)=>{
 router.post('/googlelogin',async(req,res)=>{
     const {tokenId}=req.body;
     
-
+    try{
     client.verifyIdToken({idToken:tokenId,audience:"12622348913-teiih4gci150mr2k94rpfu9lordsot6o.apps.googleusercontent.com"})
     .then(async(response)=>{
         
@@ -318,7 +318,7 @@ router.post('/googlelogin',async(req,res)=>{
                 });
                 console.log(token);
                 return res.send({message:"Google Login Successful"})
-                res.redirect("https://amanregister.herokuapp.com/#/");
+                
             }
             else{
                 let password = email+process.env.SECRET_KEY;
@@ -337,12 +337,15 @@ router.post('/googlelogin',async(req,res)=>{
                 });
                 console.log(token);
                 return res.send({message:"Google Login Successful"})
-                res.redirect("https://amanregister.herokuapp.com/#/");
+                
             }
             
         }
-        })
-        
     
+    })
+        
+    }catch(err){
+        console.log(err);
+    }
 });
 module.exports = router;
