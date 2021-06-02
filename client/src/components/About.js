@@ -7,7 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {Deletename,Deleteaddress,EditData,AddImage} from './EditUser';
 import Modal from 'react-bootstrap/Modal'
 import axios from 'axios'
-
+import {UserContext} from '../App'
 const Logout =async()=>{
 
   const {state,dispatch} = useContext(UserContext);
