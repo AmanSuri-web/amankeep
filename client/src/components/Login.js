@@ -1,10 +1,12 @@
 import React,{useContext, useState} from 'react';
 import { NavLink ,useHistory} from "react-router-dom";
 import '../index.css'
-
+import GoogleLogin from 'react-google-login';
 import EmailIcon from '@material-ui/icons/Email';
 import LockIcon from '@material-ui/icons/Lock';
 import {UserContext} from '../App'
+import axios from 'axios';
+
 
 const Login=()=>{
 
@@ -42,6 +44,34 @@ const Login=()=>{
             history.push("/about");
         }
     }
+
+    const responseSuccessGoogle = async(response)=>{
+        
+        const res = await fetch("/googlelogin", {
+            method:"POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                
+                tokenId:response.tokenId
+
+            })
+        });
+        
+       
+                dispatch({type:"USER",payload:true})
+                window.alert("Google Login Successful ");
+                console.log("Google Login Successful");
+    
+                history.push("/about");
+        
+            
+        
+    }
+    const responseErrorGoogle =(response)=>{
+
+    }
         return (<>
                   
                 
@@ -62,6 +92,18 @@ const Login=()=>{
                         <button className="btn btn-outline-primary " style={{width:'100%',marginTop:'10px'}} type="submit" >Login</button>
                         <div  style={{display:'flex',textAlign:'center',marginTop:'20px'}}>
                             <p>Don't have an account? </p><NavLink style={{marginLeft:'10px'}} className="navlink"  to="/signup">Sign Up</NavLink>
+                        </div>
+                        
+                        <div style={{left:'26%',top:'85%',position:'absolute'}}>
+                        <GoogleLogin
+                            clientId="12622348913-teiih4gci150mr2k94rpfu9lordsot6o.apps.googleusercontent.com"
+                            buttonText="Login with google"
+                            
+                            onSuccess={responseSuccessGoogle}
+                            onFailure={responseErrorGoogle}
+                            cookiePolicy={'single_host_origin'}
+                            style={{width:'100%'}}
+                        />
                         </div>
                     </form>
                 </div>

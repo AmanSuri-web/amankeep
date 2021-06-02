@@ -4,21 +4,31 @@ import '../index.css'
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {Deletename,Deleteaddress,EditData} from './EditUser';
+import {Deletename,Deleteaddress,EditData,AddImage} from './EditUser';
 import Modal from 'react-bootstrap/Modal'
+import axios from 'axios'
+
+
 
 const About = () => {
   const history = useHistory();
   const [user,setuser]=useState({
-    name:"",
-    email:"",
-    address:""
-})
-
-const [useredit,setuseredit]=useState({
+    fname:"",
+  lname:"",
   name:"",
   email:"",
-  address:""
+  address:"",
+  picture:""
+  
+})
+const [ pic,setpic ] = useState("")
+const [useredit,setuseredit]=useState({
+  fname:"",
+  lname:"",
+  name:"",
+  email:"",
+  address:"",
+  
 })
 
   const callAboutPage = async () => {
@@ -34,6 +44,7 @@ const [useredit,setuseredit]=useState({
       const data = await res.json();
       
       setuser(data)
+      console.log(user.picture)
       if (!res.status === 200) {
         const error = new Error(res.error);
         throw error;
@@ -58,7 +69,38 @@ const [useredit,setuseredit]=useState({
         }
       })
     }
-
+    const onChangeFile = (e)=>{
+      setpic(e.target.files[0])
+      
+    }
+   
+    const ChangeOnClick = async(e)=>{
+      e.preventDefault()
+      
+      console.log(pic)
+      const formData = new FormData();
+      
+      formData.append("email",user.email);
+      formData.append("file",pic);
+      console.log(formData)
+      
+      try {
+        const res = await axios.post("/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        const data = await res.json();
+        console.log(data);
+        window.alert(data);
+      }catch (err) {
+        
+        
+          console.log("There was a problem with the server");
+        
+      }
+    }
+    
 
   useEffect(() => {
     callAboutPage();
@@ -68,24 +110,29 @@ const [useredit,setuseredit]=useState({
     return (
         <>
             <div className="login-dark1" >
-                    <form  method="GET" style={{width:'200%'}}>
-                        
+                    <form  method="GET" style={{width:'200%'}} enctype="multipart/form-data">
+                          <img src={user.picture} alt="img"/>
                             <div className="col md-4">
                                 <AccountBoxIcon style={{fontSize:'100px',marginLeft:'110px',marginTop:'-20px'}}/>
                             </div>
                             <div  style={{display:'flex'}}>
+                            <p>Username:    </p><p className="textColor" style={{marginLeft:'50px'}}>{user.name}</p>
+                            </div>
+                            <div  style={{display:'flex'}}>
                             <div className="col md-4">
-                                <p>Username:</p>
+                               
+                                
+                                <p>First Name:</p>
+                                <p>last Name:</p>
                                 <p>Email:</p>
-                                <p>Address:</p>
+                                <p>Bio:</p>
 
                             </div>
                             <div className="col textColor" style={{marginLeft:'30px'}}>
 
-                                <p>{user.name} <EditIcon style={{marginLeft:'20px'}} onClick={() => {setShowuse(true);setuseredit(user)}}/> 
-                                <DeleteIcon style={{marginLeft:'20px'}} onClick={()=>{setuser({name:'',email:user.email,address:user.address});Deletename(user)}}/>
-                                </p>
-
+                                
+                                <p>{user.fname}</p>
+                                <p>{user.lname}</p>
                                 <p>{user.email}</p>
 
                                 <p className='p_wrap'>{user.address} <EditIcon style={{marginLeft:'20px'}} onClick={() => {setShowadd(true);setuseredit(user)}}/>
@@ -94,7 +141,20 @@ const [useredit,setuseredit]=useState({
 
                             </div>
                         </div>
-                    </form>
+                        <div className="form-group">
+                <label htmlFor="exampleFormControlFile1">
+                  Choose profile image
+                </label>
+                <input
+                  type="file"
+                  className="form-control-file"
+                  id="exampleFormControlFile1"
+                  onChange={onChangeFile}
+                />
+              <button onClick = {ChangeOnClick}> Upload</button> 
+                </div>
+                        </form>
+                        
                 </div>
 
         <Modal show={showuser} onHide={() => setShowuse(false)} >

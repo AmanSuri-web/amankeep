@@ -5,14 +5,17 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import LockIcon from '@material-ui/icons/Lock';
+import Checkbox from '@material-ui/core/Checkbox';
 const Signup = () => {
     const history = useHistory()
     const [user,setuser]=useState({
+        fname:"",
+        lname:"",
         name:"",
         email:"",
         password:"",
-        cpassword:"",
-        address:""
+        cpassword:""
+        
     })
     const handleInput = (event) =>{
         const { name, value } = event.target;
@@ -21,11 +24,12 @@ const Signup = () => {
       [name]: value
     }));
     }
-
+    const [pcheck1,setpcheck1]=useState(false);
+    const [pcheck2,setpcheck2]=useState(false);
     const PostData = async (e) =>{
         e.preventDefault();
         
-        const {name,email,password,cpassword,address} = user;
+        const {fname,lname,name,email,password,cpassword} = user;
 
         const res = await fetch("/register", {
             method:"POST",
@@ -34,19 +38,19 @@ const Signup = () => {
             },
             body: JSON.stringify({
                 
-                name,email,password,cpassword,address
+                fname,lname,name,email,password,cpassword
 
             })
         })
         const data = await res.json();
         
-        if(data.status === 422 || data.error){
+        if(data.status === 500 || data.error){
             window.alert(data.error);
             console.log(data.error);
         }
         else{
-            window.alert("Registeration Successful ");
-            console.log("Registeration Successful");
+            window.alert(data.msg);
+            console.log(data.msg);
 
             history.push("/")
         }
@@ -60,6 +64,14 @@ const Signup = () => {
                         </div>
                         <div className="form-group" style={{display:'flex'}}>
                             <label><AccountCircleIcon/></label>
+                            <input class="form-control" type="text" name="fname" value={user.fname} onChange={handleInput} placeholder="Enter Firstname"/>
+                        </div>
+                        <div className="form-group" style={{display:'flex'}}>
+                            <label><AccountCircleIcon/></label>
+                            <input class="form-control" type="text" name="lname" value={user.lname} onChange={handleInput} placeholder="Enter Lastname"/>
+                        </div>
+                        <div className="form-group" style={{display:'flex'}}>
+                            <label><AccountCircleIcon/></label>
                             <input class="form-control" type="text" name="name" value={user.name} onChange={handleInput} placeholder="Enter username"/>
                         </div>
                         <div className="form-group" style={{display:'flex'}}>
@@ -68,16 +80,33 @@ const Signup = () => {
                         </div>
                         <div className="form-group" style={{display:'flex'}}>
                             <label><LockIcon/></label>
-                            <input class="form-control" type="password" name="password" value={user.password} onChange={handleInput} placeholder="Password"/>
+                            <input class="form-control" type={pcheck1?"text":"password"} name="password" value={user.password} onChange={handleInput} placeholder="Password"/>
+                            <Checkbox
+                                
+                                onClick={() => setpcheck1(!pcheck1)}
+                                labelStyle={{color: 'white'}}
+                                iconStyle={{fill: 'white'}}
+                                style ={{
+                                    color: "white",
+                                  }}
+                            />
+                             <p style={{position:'absolute',left:'87%',marginTop:'12px',fontSize:'10px'}}>show</p>
                         </div>
                         <div className="form-group" style={{display:'flex'}}>
                             <label><LockIcon/></label>
-                            <input class="form-control" type="password" name="cpassword" value={user.cpassword} onChange={handleInput} placeholder="Confirm Password"/>
+                            <input class="form-control" type={pcheck2?"text":"password"} name="cpassword" value={user.cpassword} onChange={handleInput} placeholder="Confirm Password"/>
+                            <Checkbox
+                                
+                                onClick={() => setpcheck2(!pcheck2)}
+                                labelStyle={{color: 'white'}}
+                                iconStyle={{fill: 'white'}}
+                                style ={{
+                                    color: "white",
+                                  }}
+                            />
+                            <p style={{position:'absolute',left:'87%',marginTop:'12px',fontSize:'10px'}}>show</p>
                         </div>
-                        <div className="form-group" style={{display:'flex'}}>
-                            <label><LocationOnIcon/></label>
-                            <textarea class="form-control" rows={3} placeholder="Enter address" value={user.address} onChange={handleInput} name="address" />
-                        </div>
+                        
                         <button className="btn btn-outline-primary " style={{width:'100%',marginTop:'10px'}} type="submit" >Signup</button>
                         <div  style={{display:'flex',textAlign:'center',marginTop:'20px'}}>
                             <p>Already have an account? </p><NavLink style={{marginLeft:'10px'}} className="navlink"  to="/">Login</NavLink>

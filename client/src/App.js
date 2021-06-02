@@ -6,6 +6,7 @@ import About from './components/About.js'
 import Navbar from './components/Navbar.js'
 import Error from './components/ErrorPage'
 import Logout from './components/Logout'
+import Activate from './components/Activate'
 import {initialState,reducer} from './reducer/UseReducer'
 
 
@@ -25,6 +26,7 @@ const App=()=>{
          			<Route  path="/signup" component={Signup}/>
 					<Route exact path="/about" component={About} />
 		  			<Route  path="/logout" component={Logout} />
+					<Route  path="/authentication/activate/:token" component={Activate} />
 					<Route  component={Error} />
 
 				</Switch>

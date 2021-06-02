@@ -66,3 +66,15 @@ export const EditData = async (props) =>{
         console.log(data.message);  
     
 }
+
+
+export const AddImage = async (props) =>{
+    
+    
+    const email = props.email;
+    const image = props.image;
+    console.log(email)
+    console.log(image)
+    
+    
+}
