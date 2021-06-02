@@ -8,33 +8,29 @@ import {Deletename,Deleteaddress,EditData,AddImage} from './EditUser';
 import Modal from 'react-bootstrap/Modal'
 import axios from 'axios'
 import {UserContext} from '../App'
-const Logout =async()=>{
+
+const Logout =()=>{
 
   const {state,dispatch} = useContext(UserContext);
   const history = useHistory();
   
-  try {
-    const res = await fetch('/logout',{
-          method:"GET",
-          headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json"
-            },
-            credentials: "include",
-      }).then((res)=>{
-          dispatch({type:"USER",payload:false})
-          history.push('/',{replace:true});
-          if (res.status !== 200) {
-              const error = new Error(res.error);
-              throw error;
-            }
-      }).catch((err)=>{
-          console.log(err);
-      })
-    } catch (err) {
-      console.log(err);
-      history.push("/");
-    }
+  fetch('/logout',{
+    method:"GET",
+    headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+}).then((res)=>{
+    dispatch({type:"USER",payload:false})
+    history.push('/',{replace:true});
+    if (res.status !== 200) {
+        const error = new Error(res.error);
+        throw error;
+      }
+}).catch((err)=>{
+    console.log(err);
+})
 }
 
 const About = () => {
