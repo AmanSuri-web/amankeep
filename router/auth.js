@@ -317,7 +317,7 @@ router.post('/googlelogin',async(req,res)=>{
                     httpOnly:true
                 });
                 console.log(token);
-                res.redirect("http://localhost:3000");
+                res.redirect("/");
             }
             else{
                 let password = email+process.env.SECRET_KEY;
