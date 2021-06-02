@@ -318,7 +318,7 @@ router.post('/googlelogin',async(req,res)=>{
                 });
                 console.log(token);
                 res.json("Google Login Successful")
-                res.redirect("/");
+                res.redirect("https://amanregister.herokuapp.com/#/");
             }
             else{
                 let password = email+process.env.SECRET_KEY;
@@ -336,7 +336,7 @@ router.post('/googlelogin',async(req,res)=>{
                     httpOnly:true
                 });
                 console.log(token);
-                res.redirect("/");
+                res.redirect("https://amanregister.herokuapp.com/#/");
             }
             
         }
