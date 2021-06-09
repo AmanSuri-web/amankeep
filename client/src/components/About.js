@@ -8,12 +8,11 @@ import {Deletename,Deleteaddress,EditData,AddImage} from './EditUser';
 import Modal from 'react-bootstrap/Modal'
 import axios from 'axios'
 
-//import userPic from './../upload/1'
-import userPic from '../upload/1623222743465_Screenshot 2021-06-09 at 6.20.14 AM.png'
+
 
 
 const About = () => {
-  const [Pic,SetPic]=useState('./defaultPic.png')
+  
   const history = useHistory();
   const [user,setuser]=useState({
     fname:"",
@@ -53,8 +52,7 @@ const [useredit,setuseredit]=useState({
       else{
         setuser({name:data.name,fname:data.fname,lname:data.lname,email:data.email,address:data.address,picture:'defaultPic.png'})
       }
-      console.log(`../upload/${data.picture}`)
-      console.log(user.picture)
+      
       if (!res.status === 200) {
         const error = new Error(res.error);
         throw error;
