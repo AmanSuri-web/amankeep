@@ -29,10 +29,7 @@ const userSchema = new mongoose.Schema({
         required:false
     },
     picture:{
-        
-            data: Buffer,
-            contentType: String
-        
+        type: String,
     },
     firstDate:{
         type:Date,

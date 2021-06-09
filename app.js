@@ -20,7 +20,9 @@ const PORT = process.env.PORT || 5000;
 // app.get("/about",middleware,(req,res)=>{
 //     res.send(`Hello world from about me server`);
 // });
-
+app.get('/', function(req, res, next) {
+    res.send("Hello world");
+});
 if(process.env.NODE_ENV === "production"){
     app.use(express.static("client/build"));
 }

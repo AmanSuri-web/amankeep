@@ -26,10 +26,11 @@ sgMail.setApiKey(process.env.SENDGRID_KEY);
 const upload = multer({
     storage: multer.diskStorage({
       destination(req, file, cb) {
-        cb(null, './db');
+        cb(null, './../client/public/upload');
       },
       filename(req, file, cb) {
-        cb(null, `${new Date().getTime()}_${file.originalname}`);
+          const str = file.originalname.split(' ').join('')
+        cb(null, `${new Date().getTime()}_${str}`);
       }
     }),
     limits: {
@@ -63,7 +64,7 @@ router.post('/upload',upload.single('file'),async(req,res)=>{
             {$set : {"picture":image}}
         )
         console.log('Updated Successfuly')
-        res.send({message:'Updated Successfuly'});
+        return res.send({message:'Updated Successfuly'});
    
   
 
@@ -203,6 +204,37 @@ router.post('/email-activate',async(req,res)=>{
     }
 })
 
+router.post('/demo-register',async(req,res)=>{
+
+    const {fname,lname,name,email,password,cpassword} = req.body;
+    
+    if( !fname|| !lname|| !name|| !email||  !password|| !cpassword ){
+        return res.status(422).json({error:'fill the complete form'});
+    }
+    if(password!=cpassword){
+        return res.status(422).json({error:'password incorrect'});
+    }
+    try{
+       const userExist = await User.findOne({email:email});
+
+       if(userExist){
+        return res.status(422).json({error:'Email already exist'});
+    }
+
+    const user = new User({fname,lname,name,email,password});
+    
+    const x=  await user.save();
+    
+     res.status(201).json({message:'registration Successful '});
+    
+    
+    }catch(err){
+        console.log(err);
+    }
+    
+});
+
+
 //login route
 router.post('/signin',async(req,res)=>{
 
@@ -226,7 +258,8 @@ router.post('/signin',async(req,res)=>{
 
             res.cookie("jwtoken", token,{
                 expires:new Date(Date.now()+ 3000000),
-                httpOnly:true
+                httpOnly:false
+                
             });
 
             if(!isMatch){
@@ -314,7 +347,7 @@ router.post('/googlelogin',async(req,res)=>{
 
                 res.cookie("jwtoken", token,{
                     expires:new Date(Date.now()+ 3000000),
-                    httpOnly:true
+                    httpOnly:false
                 });
                 console.log(token);
                 return res.send({message:"Google Login Successful"})
@@ -333,7 +366,7 @@ router.post('/googlelogin',async(req,res)=>{
 
                 res.cookie("jwtoken", token,{
                     expires:new Date(Date.now()+ 3000000),
-                    httpOnly:true
+                    httpOnly:false
                 });
                 console.log(token);
                 return res.send({message:"Google Login Successful"})

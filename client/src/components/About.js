@@ -7,11 +7,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {Deletename,Deleteaddress,EditData,AddImage} from './EditUser';
 import Modal from 'react-bootstrap/Modal'
 import axios from 'axios'
-import {UserContext} from '../App'
 
+//import userPic from './../upload/1'
+import userPic from '../upload/1623222743465_Screenshot 2021-06-09 at 6.20.14 AM.png'
 
 
 const About = () => {
+  const [Pic,SetPic]=useState('./defaultPic.png')
   const history = useHistory();
   const [user,setuser]=useState({
     fname:"",
@@ -19,7 +21,7 @@ const About = () => {
   name:"",
   email:"",
   address:"",
-  picture:""
+  picture:"",
   
 })
 const [ pic,setpic ] = useState("")
@@ -45,6 +47,13 @@ const [useredit,setuseredit]=useState({
       const data = await res.json();
       
       setuser(data)
+      if(data.picture){
+        
+      }
+      else{
+        setuser({name:data.name,fname:data.fname,lname:data.lname,email:data.email,address:data.address,picture:'defaultPic.png'})
+      }
+      console.log(`../upload/${data.picture}`)
       console.log(user.picture)
       if (!res.status === 200) {
         const error = new Error(res.error);
@@ -85,21 +94,17 @@ const [useredit,setuseredit]=useState({
       formData.append("file",pic);
       console.log(formData)
       
-      try {
-        const res = await axios.post("/upload", formData, {
+      
+         axios.post("/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        });
-        const data = await res.json();
-        console.log(data);
-        window.alert(data);
-      }catch (err) {
+        }).then(res=>{
+          console.log(res)
+          window.alert(res.data.message);
+        }).catch(err=>console.log(err))
         
-        
-          console.log("There was a problem with the server");
-        
-      }
+      
     }
     
 
@@ -107,14 +112,16 @@ const [useredit,setuseredit]=useState({
     callAboutPage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
     return (
         <>
             <div className="login-dark1" >
                     <form  method="GET" style={{width:'200%'}} enctype="multipart/form-data">
-                          <img src={user.picture} alt="img"/>
+                          
                             <div className="col md-4">
-                                <AccountBoxIcon style={{fontSize:'100px',marginLeft:'110px',marginTop:'-20px'}}/>
+                            
+  
+                            <img src={`/upload/${user.picture}`} alt="img" style={{width:'200px',height:'200px',marginLeft:'55px',padding:'20px'}}/>
                             </div>
                             <div  style={{display:'flex'}}>
                             <p>Username:    </p><p className="textColor" style={{marginLeft:'50px'}}>{user.name}</p>

@@ -21,7 +21,7 @@ const App=()=>{
 		<UserContext.Provider value={{state,dispatch}}>
         <Navbar/>
 				<Switch>
-
+					
 					<Route exact path="/" component={Login}/>
          			<Route  path="/signup" component={Signup}/>
 					<Route exact path="/about" component={About} />

@@ -1,18 +1,55 @@
-import React ,{useContext, useEffect} from 'react';
-import { NavLink } from "react-router-dom";
+import React ,{useContext, useEffect,useState} from 'react';
+import { NavLink ,useHistory} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import '../index.css'
 import {UserContext} from '../App'
 
 const Navbar = () => {
-  const {state,dispatch} = useContext(UserContext);
+  const history=useHistory();
+  
+ const getCookie = ()=>{
+  var dc = document.cookie;
+    var prefix = "jwtoken" + "=";
+    var begin = dc.indexOf("; " + prefix);
+    if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+    }
+    else
+    {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+        end = dc.length;
+        }
+    }
+    
+    return decodeURI(dc.substring(begin + prefix.length, end));
+ }
+ const [ myCookie,setMyCookie]= useState(getCookie());
   useEffect(() => {
     
+    // because unescape has been deprecated, replaced with decodeURI
+    //return unescape(dc.substring(begin + prefix.length, end));
     
-  }, [state]);
+  
+  return history.listen((location) => { 
+    console.log(`You changed the page to: ${location.pathname}`) 
+    
+    console.log(getCookie())
+    setMyCookie(getCookie())
+    
+ }) 
+},[history]);
+  const {state,dispatch} = useContext(UserContext);
+  
+  console.log(myCookie)
+  console.log(document.cookie)
+  
+  
 console.log(state)
   const RenderMenu = () => {
-    if(state){
+    if(myCookie){
       return(
         <>
             <li className="nav-item ">
