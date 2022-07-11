@@ -20,7 +20,7 @@ cloudinary.config({
 
 })
 const {v4 : uuidv4} = require('uuid')
-sgMail.setApiKey(process.env.SENDGRID_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 
@@ -197,8 +197,8 @@ router.post('/email-activate',async(req,res)=>{
          
              const user = new User({fname,lname,name:uname,email,password,picture:""});
              
-             const note = new Note({ name,note:[]})
-             const lnote = new Lnote({ name,note:[]})
+             const note = new Note({ name:uname,note:[]})
+             const lnote = new Lnote({ name:uname,note:[]})
     
             const x=  await user.save();
             const y=  await note.save();
