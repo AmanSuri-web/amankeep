@@ -3,7 +3,6 @@ import {  NavLink, useHistory} from "react-router-dom";
 import '../index.css'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 import LockIcon from '@material-ui/icons/Lock';
 import Checkbox from '@material-ui/core/Checkbox';
 const Signup = () => {
