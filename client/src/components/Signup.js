@@ -29,7 +29,7 @@ const Signup = () => {
         e.preventDefault();
         
         const {fname,lname,name,email,password,cpassword} = user;
-
+        console.log(user);
         const res = await fetch("/register", {
             method:"POST",
             headers:{
