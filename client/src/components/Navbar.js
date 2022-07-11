@@ -3,7 +3,7 @@ import { NavLink ,useHistory} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import '../index.css'
 import {UserContext} from '../App'
-
+import logo from './logo.png';
 const Navbar = () => {
   const history=useHistory();
   
@@ -52,7 +52,13 @@ console.log(state)
     if(myCookie){
       return(
         <>
+        
+        <li className="nav-item ">
+              
+              <NavLink activeClassName="menu_active" className="nav-link" to="/note">notes </NavLink>
+            </li>
             <li className="nav-item ">
+
         <NavLink activeClassName="menu_active" className="nav-link" to="/about">About me </NavLink>
       </li>
       
@@ -64,6 +70,7 @@ console.log(state)
     } else{
       return(
         <>
+        
           <li className="nav-item ">
         <NavLink activeClassName="menu_active" className="nav-link" to="/about">About me </NavLink>
       </li>
@@ -82,7 +89,8 @@ console.log(state)
     return (
          <>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <NavLink className="navbar-brand " to="/" style={{marginLeft:'10px'}}>AmanLogin</NavLink>
+            <img className="ml-5 mt-2 mb-2"  src={logo} alt="logo"/>
+				<h1 className="mt-3 ml-2" style={{fontFamily:' Redressed, cursive',color:'white'}}> Aman keep</h1>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
   </button>

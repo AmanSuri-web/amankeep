@@ -11,7 +11,8 @@ const cloudinary = require('cloudinary')
 const { response } = require('express');
 const multer = require('multer');
 const  sgMail  = require('@sendgrid/mail');
-
+const Note  = require("../model/notes");
+const Lnote  = require("../model/Lnotes");
 cloudinary.config({
     cloud_name:	process.env.CLOUD_NAME,
     api_key:	 process.env.API_KEY,
@@ -196,7 +197,12 @@ router.post('/email-activate',async(req,res)=>{
          
              const user = new User({fname,lname,name:uname,email,password,picture:""});
              
-             const x=  await user.save();
+             const note = new Note({ name,note:[]})
+             const lnote = new Lnote({ name,note:[]})
+    
+            const x=  await user.save();
+            const y=  await note.save();
+            const z=  await lnote.save();
              return res.status(200).json({message:'Registeration Successful'});
         })
     } else{
@@ -293,6 +299,123 @@ router.get("/about",authenticate,(req,res)=>{
     return res.json(data);
 });
 
+router.get("/getnote",authenticate,async(req,res)=>{
+    
+    const note = await Note.findOne({"name":req.rootUser.name});
+    const lnote = await Lnote.findOne({"name":req.rootUser.name});
+    const data = {
+        
+        name:req.rootUser.name,
+        email:req.rootUser.email,
+        
+        mnote:note.note,
+        lmnote:lnote.note,
+    }
+    
+    return res.json(data);
+});
+
+router.post('/addnote',async(req,res)=>{
+
+    const {name,email,note} = req.body;
+    console.log(name);
+    console.log(note);
+    
+    try{
+            await Note.updateOne(
+                {"name":name},
+                {$push : {note}}
+            )
+            
+            
+            
+            
+            return res.send({message:'Updated Successfuly'});
+       
+      
+    
+    }catch(err){
+        console.log(err);
+    }
+    
+});
+
+router.post('/remnote',async(req,res)=>{
+
+    const {name,email,props} = req.body;
+    console.log(props);
+    
+    try{
+            await Note.updateOne(
+                {"name":name},
+                {$pull : { "note": { "_id": props._id }}}
+            )
+            
+            
+            
+            
+            return res.send({message:'Updated Successfuly'});
+       
+      
+    
+    }catch(err){
+        console.log(err);
+    }
+    
+});
+
+router.post('/addlnote',async(req,res)=>{
+
+    const {name,email,props} = req.body;
+    
+    
+    const note={
+        title:props.title,
+        content:props.content,
+    }
+    console.log(note);
+    try{
+            await Lnote.updateOne(
+                {"name":name},
+                {$push : {note}}
+            )
+            
+            
+            
+            
+            return res.send({message:'Updated Successfuly'});
+       
+      
+    
+    }catch(err){
+        console.log(err);
+    }
+    
+});
+
+router.post('/remlnote',async(req,res)=>{
+
+    const {name,email,props} = req.body;
+    console.log(props);
+    console.log(props._id);
+    try{
+            await Lnote.updateOne(
+                {"name":name},
+                {$pull : { "note": { "_id": props._id }}}
+            )
+            
+            
+            
+            
+            return res.send({message:'Updated Successfuly'});
+       
+      
+    
+    }catch(err){
+        console.log(err);
+    }
+    
+});
 
 router.get("/logout",(req,res)=>{
     
@@ -328,7 +451,7 @@ router.post('/edit',async(req,res)=>{
 
 router.post('/googlelogin',async(req,res)=>{
     const {tokenId}=req.body;
-    
+    console.log('hello');
     try{
     client.verifyIdToken({idToken:tokenId,audience:"12622348913-teiih4gci150mr2k94rpfu9lordsot6o.apps.googleusercontent.com"})
     .then(async(response)=>{
@@ -361,6 +484,11 @@ router.post('/googlelogin',async(req,res)=>{
                 
                 const newUser = new User({fname,lname,name:str,email,password,picture:""});
                 const x=  await newUser.save();
+                const note = new Note({ name:str,note:[]})
+                const lnote = new Lnote({ name:str,note:[]})
+            
+                const y=  await note.save();
+                const z=  await lnote.save();
                 let token = await newUser.generateAuthToken();
                 
 

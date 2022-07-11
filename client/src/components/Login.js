@@ -5,7 +5,7 @@ import GoogleLogin from 'react-google-login';
 import EmailIcon from '@material-ui/icons/Email';
 import LockIcon from '@material-ui/icons/Lock';
 import {UserContext} from '../App'
-import axios from 'axios';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 const Login=()=>{
@@ -15,7 +15,7 @@ const Login=()=>{
     const history = useHistory();
     const [email,setemail]=useState('');
     const [password,setPassword]=useState('');
-
+    const [pcheck1,setpcheck1]=useState(false);
     const loginUser = async (e) =>{
         e.preventDefault();
 
@@ -86,7 +86,17 @@ const Login=()=>{
                         </div>
                         <div className="form-group" style={{display:'flex'}}>
                             <label><LockIcon/></label>
-                            <input class="form-control" type="password" name="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder="Enter password"/>
+                            <input class="form-control" type={pcheck1?"text":"password"} name="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder="Enter password"/>
+                            <Checkbox
+                                
+                                onClick={() => setpcheck1(!pcheck1)}
+                                labelStyle={{color: 'white'}}
+                                iconStyle={{fill: 'white'}}
+                                style ={{
+                                    color: "white",
+                                  }}
+                            />
+                            <p style={{position:'absolute',left:'89%',marginTop:'12px',fontSize:'10px'}}>show</p>
                         </div>
                         <button className="btn btn-outline-primary " style={{width:'100%',marginTop:'10px'}} type="submit" >Login</button>
                         <div  style={{display:'flex',textAlign:'center',marginTop:'20px'}}>

@@ -35,6 +35,15 @@ const userSchema = new mongoose.Schema({
         type:Date,
         default:Date.now
     },
+    notes:[
+        {
+            note:{
+                type: String,
+                type: String,
+                required:true
+            }
+        }
+    ],
     tokens:[
         {
             token:{
