@@ -19,7 +19,7 @@ cloudinary.config({
     api_secret:  process.env.API_SECRET
 
 })
-const {v4 : uuidv4} = require('uuid')
+const {v4 : uuidv4} = require('uuid')//generate random string
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
@@ -27,7 +27,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const upload = multer({
     storage: multer.diskStorage({
       destination(req, file, cb) {
-        cb(null, './client/public/upload');
+        cb(null, './../client/public/upload');
       },
       filename(req, file, cb) {
           const str = file.originalname.split(' ').join('')
@@ -55,14 +55,15 @@ router.post('/upload',upload.single('file'),async(req,res)=>{
     
     const email = req.body.email;
     console.log(email)
-    const image = req.file.filename;
-    console.log(req.file)
+    const image = req.body.pic;
+    
     
     try{
-       
+       const result = await cloudinary.uploader.upload(image,{upload_preset: "aman-upload",})
+       console.log(result);
         await User.updateOne(
             {"email":email},
-            {$set : {"picture":image}}
+            {$set : {"picture":result.secure_url}}
         )
         console.log('Updated Successfuly')
         return res.send({message:'Updated Successfuly'});

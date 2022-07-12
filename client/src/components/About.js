@@ -50,7 +50,7 @@ const [useredit,setuseredit]=useState({
         
       }
       else{
-        setuser({name:data.name,fname:data.fname,lname:data.lname,email:data.email,address:data.address,picture:'defaultPic.png'})
+        setuser({name:data.name,fname:data.fname,lname:data.lname,email:data.email,address:data.address,picture:'https://res.cloudinary.com/amanimages/image/upload/v1657638760/p0vitqyxpsldaxv2bcck.png'})
       }
       
       if (!res.status === 200) {
@@ -78,30 +78,38 @@ const [useredit,setuseredit]=useState({
       })
     }
     const onChangeFile = (e)=>{
-      setpic(e.target.files[0])
+      const reader=new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onloadend = ()=>{
+        setpic(reader.result);
+      }
       
     }
    
     const ChangeOnClick = async(e)=>{
       e.preventDefault()
+      if(!pic)
+        return;
       
-      console.log(pic)
-      const formData = new FormData();
-      
-      formData.append("email",user.email);
-      formData.append("file",pic);
-      console.log(formData)
+      const email = user.email;
       
       
-         axios.post("/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+      
+         const res = await fetch("/upload", {
+          method:"POST",
+          headers:{
+              "Content-Type": "application/json"
           },
-        }).then(res=>{
-          console.log(res)
-          window.alert(res.data.message);
-        }).catch(err=>console.log(err))
-        
+          body: JSON.stringify({
+              
+              email,pic
+
+          })
+      })
+      const data = await res.json();
+          
+        alert(data.message);  
+        window.location.reload();
       
     }
     
@@ -119,7 +127,7 @@ const [useredit,setuseredit]=useState({
                             <div className="col md-4">
                             
   
-                            <img src={`/upload/${user.picture}`} alt="img" style={{width:'200px',height:'200px',marginLeft:'55px',padding:'20px'}}/>
+                            <img src={user.picture} alt="img" style={{width:'200px',height:'200px',marginLeft:'55px',padding:'20px'}}/>
                             </div>
                             <div  style={{display:'flex'}}>
                             <p>Username:    </p><p className="textColor" style={{marginLeft:'50px'}}>{user.name}</p>

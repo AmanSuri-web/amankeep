@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const cookieParse= require('cookie-parser');
 app.use(cookieParse());
-
+app.use(express.json({limit:'50mb'}));
 dotenv.config({path:'./config.env'});
 //const User = require('./model/userSchema');
 require('./db/conn');
