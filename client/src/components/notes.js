@@ -268,8 +268,9 @@ useEffect(() => {
 				
 			</div>
 			<div style={{display:'grid'}}>
-			<div className="mt-5 grid-container" >
 			<h5 style={{fontSize:"12px",marginLeft:"15px"}}>{label1}</h5>
+			<div className="mt-5 grid-container" >
+			
 			
 			{addPin.map((val,index)=>{
 				return(
@@ -299,9 +300,9 @@ useEffect(() => {
 			})}
 			</div>
 			
-
-			<div className="mt-5 grid-container " >
 			<h5 style={{fontSize:"12px",marginLeft:"15px"}}>{label2}</h5>
+			<div className="mt-5 grid-container " >
+			
             
 			
 			{addItem.map((val,index)=>{

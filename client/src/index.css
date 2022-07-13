@@ -189,9 +189,37 @@ code {
 .p_wrap {
   white-space: pre-line;
 }
-
+.grid-container {
+  margin-bottom: 50px;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+@media (max-width: 1200px){
+  .grid-container {
+    margin-bottom: 50px;
+    display: grid;
+    
+    grid-template-columns: auto auto auto;
+    
+  }
+  }
+@media (max-width: 991px){
+  .grid-container {
+    margin-bottom: 50px;
+    display: grid;
+    
+    grid-template-columns: auto auto;
+    
+  }
+  }
 @media (max-width: 768px){
-
+  .grid-container {
+    margin-bottom: 50px;
+    display: grid;
+    
+    grid-template-columns: auto ;
+    justify-content: center;
+  }
 
 }
 
@@ -314,11 +342,4 @@ code {
 }
 .btn_hide:hover{
 	background-color: lightgrey;
-}
-.grid-container {
-  margin-bottom: 50px;
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  
-  
 }
